@@ -34,13 +34,14 @@ def optimal_change (item_cost, amount_paid):
         'nickle': 5,
         'pennie': 1
     }
-    remainder_whole = int(amount_paid - item_cost) # remainder value whole number
+    
+    remainder_int = int(amount_paid - item_cost) # remainder value whole number
     
     remainder_float = str(amount_paid - item_cost)[2:]
     change_list = remainder_float.split('.')
     change_int = int(change_list[1])
 
-    print(remainder_whole, change_int) # 37, 88
+    # print(remainder_int, change_int) # 37, 88
 
 
     money_currency_list = [] # target list for appended dict.keys
@@ -52,7 +53,7 @@ def optimal_change (item_cost, amount_paid):
             money_currency_list.append(money_strs) 
             money_value_list.append(money_value)        
 
-    print(money_currency_list, money_value_list)
+    # print(money_currency_list, money_value_list)
 
     change_currency_list = []
     change_value_list = []
@@ -61,34 +62,35 @@ def optimal_change (item_cost, amount_paid):
             change_currency_list.append(change_strs) 
             change_value_list.append(change_value) 
     
-    print(change_currency_list, change_value_list)
+    # print(change_currency_list, change_value_list)
 
+    dollar_list = []
 
+    i = 0
+    while remainder_int > 0:
+        for x in range(math.floor(remainder_int /money_value_list[i])): 
+            dollar_list.append(money_currency_list[i])
+            remainder_int -= money_value_list[i]
+        i += 1 
+
+    change_list = []
+    change_dict = {
+        'quarter': 0,
+        'dime': 0,
+        'nickle': 0,
+        'pennie': 0
+        }
     
-   
+    j = 0
+    # print(math.floor(change_int / change_value_list[0])) = 3 pennies
+    while change_int > 0:
+        for y in range(math.floor(change_int /change_value_list[j])):
+                
+            # change_int -= change_value_list[j] 
+        j += 1 
     
-    
 
-    # i = 0
-    # while amount_paid > 0:
-    #     for x in range(amount_paid /money_value_list[i]): 
-            
-            
-            #Iterate through the range of number / index at value list
-            # answer_str += money_currency_list[i] # roman string adds I
-            # # print(roman_str, roman_char_list[index])
-            # amount_paid -= money_value_list[i] # num param decrements to 0 and breaks out
-            # print(roman_value_list[index])
-        # index += 1 # add 1 to index value to iterate through lists
-
-    # return roman_str
-
-
-
-
-
-
-
+    print(change_dict, change_list)
 
 optimal_change(62.12, 100)
 
