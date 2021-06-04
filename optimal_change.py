@@ -1,5 +1,5 @@
-# import math
 import decimal
+import math
 # branch Kyle-Solution
 
 # Problem set
@@ -17,9 +17,6 @@ import decimal
 # iterate over dict and output to iterable lists
 # 
 
-
-
-
 def optimal_change (item_cost, amount_paid):
     # print(item_cost, amount_paid)
 
@@ -30,31 +27,52 @@ def optimal_change (item_cost, amount_paid):
         '$10': 10,
         '$5': 5,
         '$1': 1,
-        'quarter': .25,
-        'dime': .10,
-        'nickle': .5,
-        'pennie': .01
         }
-    # print(dict_money_values) dict key = 'key' values = int
-    answer_str = ''
+    dict_change_values = {
+        'quarter': 25,
+        'dime': 10,
+        'nickle': 5,
+        'pennie': 1
+    }
+    remainder_whole = int(amount_paid - item_cost) # remainder value whole number
+    
+    remainder_float = str(amount_paid - item_cost)[2:]
+    change_list = remainder_float.split('.')
+    change_int = int(change_list[1])
+
+    print(remainder_whole, change_int) # 37, 88
 
 
     money_currency_list = [] # target list for appended dict.keys
     money_value_list = [] # target list for appended dict.values
 
-    # iterate over dict using items -- appends list vars with iterable list of keys and values
 
+     # iterate over dict using items -- appends list vars with iterable list of keys and values
     for money_strs, money_value in dict_money_values.items(): # 
             money_currency_list.append(money_strs) 
             money_value_list.append(money_value)        
-            # Create iterable lists from dict items of key, values
 
-    # print(money_currency_list, money_value_list)
+    print(money_currency_list, money_value_list)
 
-    i = 0
-    while amount_paid > 0:
-        for x in range(amount_paid /money_value_list[i]): 
-            print(x)
+    change_currency_list = []
+    change_value_list = []
+
+    for change_strs, change_value in dict_change_values.items(): # 
+            change_currency_list.append(change_strs) 
+            change_value_list.append(change_value) 
+    
+    print(change_currency_list, change_value_list)
+
+
+    
+   
+    
+    
+
+    # i = 0
+    # while amount_paid > 0:
+    #     for x in range(amount_paid /money_value_list[i]): 
+            
             
             #Iterate through the range of number / index at value list
             # answer_str += money_currency_list[i] # roman string adds I
