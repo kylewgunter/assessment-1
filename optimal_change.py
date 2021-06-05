@@ -1,5 +1,6 @@
 import decimal
 import math
+from typing import KeysView
 # branch Kyle-Solution
 
 # Problem set
@@ -17,7 +18,8 @@ import math
 # iterate over dict and output to iterable lists
 # 
 
-def optimal_change (item_cost, amount_paid):
+
+def optimal_change (item_cost, amount_paid, ):
     # print(item_cost, amount_paid)
 
     dict_money_values = {
@@ -28,21 +30,21 @@ def optimal_change (item_cost, amount_paid):
         '$5': 5,
         '$1': 1,
         }
+    
     dict_change_values = {
         'quarter': 25,
         'dime': 10,
         'nickle': 5,
-        'pennie': 1
+        'penny': 1
     }
     
-    remainder_int = int(amount_paid - item_cost) # remainder value whole number
-    
+    remainder_int = math.floor(amount_paid - item_cost) # remainder value whole number
     remainder_float = str(amount_paid - item_cost)[2:]
-    change_list = remainder_float.split('.')
-    change_int = int(change_list[1])
+    
+    change_decimal_list = remainder_float.split('.')
+    change_int = int(change_decimal_list[1])
 
-    # print(remainder_int, change_int) # 37, 88
-
+    print(remainder_int, change_int) # 37, 88
 
     money_currency_list = [] # target list for appended dict.keys
     money_value_list = [] # target list for appended dict.values
@@ -74,23 +76,21 @@ def optimal_change (item_cost, amount_paid):
         i += 1 
 
     change_list = []
-    change_dict = {
-        'quarter': 0,
-        'dime': 0,
-        'nickle': 0,
-        'pennie': 0
-        }
+    change_dict = {}
+    
     
     j = 0
-    # print(math.floor(change_int / change_value_list[0])) = 3 pennies
     while change_int > 0:
-        for y in range(math.floor(change_int /change_value_list[j])):
-                
-            # change_int -= change_value_list[j] 
+        for x in range(math.floor(change_int/change_value_list[j])): 
+            change_list.append(change_currency_list[j])
+            change_int -= change_value_list[j]
+            print(change_value_list[j])
+            x + 1
         j += 1 
     
+    change_dict = dict.fromkeys(change_list)
 
-    print(change_dict, change_list)
+    # print(change_list, change_dict)
 
 optimal_change(62.12, 100)
 
