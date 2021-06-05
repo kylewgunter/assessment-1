@@ -44,7 +44,7 @@ def optimal_change (item_cost, amount_paid, ):
     change_decimal_list = remainder_float.split('.')
     change_int = int(change_decimal_list[1])
 
-    print(remainder_int, change_int) # 37, 88
+    # print(remainder_int, change_int) # 37, 88
 
     money_currency_list = [] # target list for appended dict.keys
     money_value_list = [] # target list for appended dict.values
@@ -75,22 +75,28 @@ def optimal_change (item_cost, amount_paid, ):
             remainder_int -= money_value_list[i]
         i += 1 
 
-    change_list = []
-    change_dict = {}
-    
+    change_list = list()
+    change_list_result = []
+    change_dict = {}   
+    count = 0
     
     j = 0
     while change_int > 0:
-        for x in range(math.floor(change_int/change_value_list[j])): 
-            change_list.append(change_currency_list[j])
+        for x in range(math.floor(change_int/change_value_list[j])):
+            if change_currency_list[j]:  
+                change_list.append([change_currency_list[j], count + 1])
             change_int -= change_value_list[j]
-            print(change_value_list[j])
-            x + 1
+            
         j += 1 
     
-    change_dict = dict.fromkeys(change_list)
-
-    # print(change_list, change_dict)
+    print(change_list)
+    for elem in change_list(len(change_list)):
+        print(elem)
+    # for elem in change_list:
+    #     print(elem)
+    #     change_list.index(0)
+    # for elem in range(change_list):
+    #         print(elem)
 
 optimal_change(62.12, 100)
 
