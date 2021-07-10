@@ -57,8 +57,7 @@ def optimal_change (item_cost, amount_paid):
         # eliminate possible float issues by multiplying by 100.
         remainder = 100 * (amount_paid - item_cost)        
         
-        # answer dict
-        # answer string
+        
         answer = ""
         change_dict = {
         }
@@ -74,11 +73,8 @@ def optimal_change (item_cost, amount_paid):
                 change_dict[key] = result 
                 remainder = round(remainder - (result * value), 2)
             
-        # print(change_dict)
-        # call anwer output function
         answer = answer_output(item_cost, amount_paid, change_dict, answer)
         
-        # print(answer)
         return answer
 
 def answer_output(item_cost, amount_paid, change_dict, output):
@@ -106,5 +102,3 @@ def answer_output(item_cost, amount_paid, change_dict, output):
                 output += f"and {value} {key}y."
         
     return output
-
-# optimal_change(31.51, 50)
