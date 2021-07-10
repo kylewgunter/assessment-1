@@ -8,129 +8,95 @@ import re
 # Elif- item cost is greater than amount paid 
 # return "Item too expensive"
 
-# 3.
-# Else - construct a dictonary of money currency values * 100 to elimnate floats.
-# remainder = 100 * amount paid - Item cost to eliminate decimals.
-# construct answer string variable
-# construct a change dictionary for the answer.
+# 3. Create change dicitionay from change maker function
+# change string calls string builder function
+# answer string produces initial input of item cost and amount paid and adds change string builder
+# return answer
 
-# while remainder is greater than 0, iterate over currency keys, values.
-# change dictionary equals to result var
-# Remainder var uses math round of remainder minus the result and multiplied by the current value and force it to two decimal places to eliminate decimals. returns the result to remainder value in the while loop.
+# 4. change maker function takes in remainder
+# creates a dictionary from currency values
+# construct change dictionary from key and values while remainder is greater than 0
+# result == math.floor divide remainder by value
+# if result is greater than 0 construct change dict key and value == result
+# remainder = round to two decimal places to fixed float and minus from remainder
+# return change dict
 
-# ***Run answer string function that takes in change dict, amount paid, item cost and output string
-# create initial output string of optimal change and amount paid
-# iterate over change dict for keys and values
-# import re for regex search
-# create change string to find the values of change types- quarter, dime, nickle, penn
-# create search for change string
-# construct output string if value is greater than 1 and no match for regex search... make dollar values output "bills"
-# construct output string if value is equal to 1 and no match for regex search... make dollar values output "bill"
-# construct output string if value is greater than 1 and match for regex search... make change values add "s"
-# construct output string if value is equal to 1 and match for regex search... return singular change values
-# Nested elif statement for "penn"... if value is equal to 1 - add 'y', if value is greater than 1, add 'ies'.
+# 5. 
+# string builder function takes in parameter of change dictionary
+# create string var of ''
+# for index and the key, enumerate over change dictionary
+# dictionary length var = length of dict
+# if index plus 1 == next entry == dict length and length is greater > 1, add "and"
+# if index plus 1 == next entry == the last entry of dict add "."
+# else change string calls plural or singular function
+# return  change string
+
+# 6. plural or singular for keys and values of change dict
+# if value == 1 return the value and the key
+# if value is > 1 and the key == "penny", change key to "pennies"
+# if value is > 1, return key and value, add "s" for plural.
+
 
 
 
 def optimal_change (item_cost, amount_paid):
     # 1.
-    if item_cost == 0 and amount_paid == 0:
+    if item_cost == 0:
         return "No transaction"
     # 2.
     if item_cost > amount_paid:
         return "Item too expensive!"
     # 3.
     else:
-        dict_currency = {
-            '$100': 10000,
-            '$50': 5000,
-            '$20': 2000,
-            '$10': 1000,
-            '$5': 500,
-            '$1': 100,
-            'quarter': 25,
-            'dime': 10,
-            'nickle': 5,
-            'penn': 1
-            }
-        # eliminate possible float issues by multiplying by 100.
-        remainder = 100 * (amount_paid - item_cost)        
-        
-        
-        answer = ""
-        change_dict = {
-        }
- 
-        # loop through remainder value until value is zero
-        while remainder > 0:
-            
-            for key in dict_currency:
-                value = dict_currency[key]      
-                result = math.floor(remainder/value)
-
-                if result > 0:
-                    change_dict[key] = result 
-                    remainder = round(remainder - (result * value), 2)
-                
-        answer = answer_output(item_cost, amount_paid, change_dict, answer)
+        change_dictionary = change_maker(100 * (amount_paid - item_cost))
+        change_string = string_builder(change_dictionary)
+        answer = f"The optimal change for an item that costs ${item_cost} with an amount paid of ${amount_paid} is " + change_string
         return answer
+# 4.
+def change_maker(remainder):
+    dict_currency = {
+        '$100 bill': 10000,
+        '$50 bill': 5000,
+        '$20 bill': 2000,
+        '$10 bill': 1000,
+        '$5 bill': 500,
+        '$1 bill': 100,
+        'quarter': 25,
+        'dime': 10,
+        'nickel': 5,
+        'penny': 1
+    }
+    change_dict = {}
+    while remainder > 0:
+        for key in dict_currency:
+            value = dict_currency[key]
+            result = math.floor(remainder/value)
+            if result > 0:
+                change_dict[key] = result
+                remainder = round(remainder - (result * value), 2)
+    return change_dict
 
-def answer_output(item_cost, amount_paid, change_dict, output):
-    
-    output += f"The optimal change for an item that costs ${item_cost} with an amount paid of ${amount_paid} is "
+# 5.
 
-    for key in change_dict:
-        value = change_dict[key]
-        num_entries = len(change_dict)
+def string_builder(change_dictionary):
+    change_string = ''
+    for i, key in enumerate(change_dictionary):
+        dictionary_length = len(change_dictionary)
+        value = change_dictionary[key]
+        if i + 1 == dictionary_length and dictionary_length > 1:
+            change_string += 'and '
+        if i + 1 == dictionary_length:
+            change_string += f"{plural_or_singular(value, key)}."
+        else:
+            change_string += f"{plural_or_singular(value, key)}, "
+    return change_string
 
-        change_str = 'quarter, dime, nickle, penn'
-        change_search = re.search(key, change_str)
-    
-        if key == "penn":
-            if value > 1:
-                output += "and " + f"{value}" + " " + f"{key}ies."
-            elif value == 1:
-                output += "and " + f"{value}" + f"{key}y." 
-
-        elif num_entries > 2:
-            if change_search == None:
-                if value > 1:
-                    output += f"{value}" + " " + f"{key}" + " bills, "
-                elif value == 1:
-                    output += f"{value}" + " " + f"{key}" + " bill, "
-            elif key != "penn":
-                if value > 1:
-                    output += f"{value}" + " " + f"{key}s" + ", "
-                elif value == 1:
-                    output += f"{value}" + " " + f"{key}" + ", "
-        
-        elif num_entries == 2:
-            if change_search == None:
-                if value > 1:
-                    output += f"{value}" + " " + f"{key}" + " bills" + ", "
-                elif value == 1:
-                    output += f"{value}" + " " + f"{key}" + " bill" + ", "
-            elif key != "penn" and num_entries > 1:
-                if value > 1:
-                    output += "and " f"{value}" + " " + f"{key}s" + "."
-                elif value == 1:
-                    output += "and " f"{value}" + " " + f"{key}" + "."
-
-        elif num_entries == 1:
-            if change_search == None:
-                if value > 1:
-                    output += f"{value}" + " " + f"{key}" + " bills" + "."
-                elif value == 1:
-                    output += f"{value}" + " " + f"{key}" + " bill" + "."
-            elif key != "penn" and num_entries > 1:
-                if value > 1:
-                    output += "and " f"{value}" + " " + f"{key}s" + "."
-                elif value == 1:
-                    output += "and " f"{value}" + " " + f"{key}" + "."
-                    
-    return output
-
-# optimal_change(62.13, 100)
-# optimal_change(31.51, 50)
-# optimal_change(49, 50)
-# optimal_change(48.50, 50)
+# 6.
+def plural_or_singular(value, key):
+    print(value, key)
+    if value == 1:
+        return f"{value} {key}"
+    if value > 1 and key == "penny":
+        return f"{value} pennies"
+    if value > 1:
+        return f"{value} {key}s"
