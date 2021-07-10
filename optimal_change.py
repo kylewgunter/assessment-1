@@ -34,12 +34,11 @@ import re
 
 def optimal_change (item_cost, amount_paid):
     # 1.
-    if item_cost and amount_paid == 0:
-        print("No transaction")
-    
+    if item_cost == 0 and amount_paid == 0:
+        return "No transaction"
     # 2.
-    elif item_cost > amount_paid:
-        print("Item too expensive!")
+    if item_cost > amount_paid:
+        return "Item too expensive!"
     # 3.
     else:
         dict_currency = {
@@ -62,19 +61,18 @@ def optimal_change (item_cost, amount_paid):
         change_dict = {
         }
  
-    # loop through remainder value until value is zero
-    while remainder > 0:
-        
-        for key in dict_currency:
-            value = dict_currency[key]      
-            result = math.floor(remainder/value)
-
-            if result > 0:
-                change_dict[key] = result 
-                remainder = round(remainder - (result * value), 2)
+        # loop through remainder value until value is zero
+        while remainder > 0:
             
+            for key in dict_currency:
+                value = dict_currency[key]      
+                result = math.floor(remainder/value)
+
+                if result > 0:
+                    change_dict[key] = result 
+                    remainder = round(remainder - (result * value), 2)
+                
         answer = answer_output(item_cost, amount_paid, change_dict, answer)
-        
         return answer
 
 def answer_output(item_cost, amount_paid, change_dict, output):
@@ -83,22 +81,56 @@ def answer_output(item_cost, amount_paid, change_dict, output):
 
     for key in change_dict:
         value = change_dict[key]
-          
+        num_entries = len(change_dict)
+
         change_str = 'quarter, dime, penn'
         change_search = re.search(key, change_str)
-
-        if value > 1 and change_search == None:
-            output += f"{value} {key} bills, "
-        elif value == 1 and change_search == None:
-            output += f"{value} {key} bill, "
-        elif value > 1 and key != "penn":
-            output += f"{value} {key}s, "
-        elif value == 1 and key != "penn":
-            output += f"{value} {key}, "
-        elif key == "penn":
+    
+        if key == "penn":
             if value > 1:
-                output += f"and {value} {key}ies."
-            else:
-                output += f"and {value} {key}y."
+                output += "and " + f"{value}" + " " + f"{key}ies."
+            elif value == 1:
+                output += "and " + f"{value}" + f"{key}y." 
+
+        elif num_entries > 2:
+            if change_search == None:
+                if value > 1:
+                    output += f"{value}" + " " + f"{key}" + " bills, "
+                elif value == 1:
+                    output += f"{value}" + " " + f"{key}" + " bill, "
+            elif key != "penn":
+                if value > 1:
+                    output += f"{value}" + " " + f"{key}s" + ", "
+                elif value == 1:
+                    output += f"{value}" + " " + f"{key}" + ", "
         
+        elif num_entries == 2:
+            if change_search == None:
+                if value > 1:
+                    output += f"{value}" + " " + f"{key}" + " bills" + ", "
+                elif value == 1:
+                    output += f"{value}" + " " + f"{key}" + " bill" + ", "
+            elif key != "penn" and num_entries > 1:
+                if value > 1:
+                    output += "and " f"{value}" + " " + f"{key}s" + "."
+                elif value == 1:
+                    output += "and " f"{value}" + " " + f"{key}" + "."
+
+        elif num_entries == 1:
+            if change_search == None:
+                if value > 1:
+                    output += f"{value}" + " " + f"{key}" + " bills" + "."
+                elif value == 1:
+                    output += f"{value}" + " " + f"{key}" + " bill" + "."
+            elif key != "penn" and num_entries > 1:
+                if value > 1:
+                    output += "and " f"{value}" + " " + f"{key}s" + "."
+                elif value == 1:
+                    output += "and " f"{value}" + " " + f"{key}" + "."
+                    
     return output
+
+# optimal_change(62.13, 100)
+# optimal_change(31.51, 50)
+# optimal_change(49, 50)
+# optimal_change(48.50, 50)
