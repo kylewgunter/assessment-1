@@ -83,7 +83,7 @@ def answer_output(item_cost, amount_paid, change_dict, output):
         value = change_dict[key]
         num_entries = len(change_dict)
 
-        change_str = 'quarter, dime, penn'
+        change_str = 'quarter, dime, nickle, penn'
         change_search = re.search(key, change_str)
     
         if key == "penn":
